@@ -30,7 +30,6 @@ body {
 }
 
 .ticTacGrid {
-  --size: 3;
   display: grid;
   grid-auto-rows: 40px;
   grid-auto-columns: 40px;
@@ -40,9 +39,9 @@ body {
 }
 
 .cell {
-  border: 1px solid black;
   display: block;
   position: relative;
+  grid-area: var(--y, 1) / var(--x, 1);
 }
 
 .tic:before,

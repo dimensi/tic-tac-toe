@@ -22,6 +22,8 @@ const winner = createStore<Players | -1>(-1).reset(resetGame);
 const current = history.map(history => last(history) || {});
 
 export const $fieldSize = createStore<[number, number]>([window.innerWidth, window.innerHeight])
+$fieldSize.on(resetGame, () => [window.innerWidth, window.innerHeight])
+
 export const $game = combine({ player, winner, history, current });
 
 const mappedStep = makeStep.filterMap(event => new Coords(event));

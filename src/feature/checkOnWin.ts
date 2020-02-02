@@ -1,5 +1,5 @@
 import { MAX_STEPS, Players, Steps } from '.';
-import { joinXY, Coords } from './coords';
+import { joinXY, ICoords } from './coords';
 
 const filterStepByPlayer = (steps: Steps, player: Players) =>
   Object.entries(steps).reduce((acc, [xy, p]) => {
@@ -24,13 +24,15 @@ const createRadius = () => {
   return result;
 };
 
-function checkWin(steps: Set<string>, startStep: Coords) {
+function checkWin(steps: Set<string>, startStep: ICoords) {
   let counter = 1;
   const radius = createRadius();
   while (MAX_STEPS > counter) {
     for (let [x, y] of generatePoints()) {
       const i = joinXY(x, y);
-      if (steps.has(joinXY(startStep.x + x * counter, startStep.y + y * counter))) {
+      const newX = startStep.x + x * counter;
+      const newY = startStep.y + y * counter;
+      if (steps.has(joinXY(newX, newY))) {
         radius[i] += 1;
       }
     }
@@ -39,7 +41,7 @@ function checkWin(steps: Set<string>, startStep: Coords) {
   return Math.max(...Object.values(radius)) === MAX_STEPS;
 }
 
-export function checkOnWin(steps: Steps, newStep: Coords, player: Players) {
+export function checkOnWin(steps: Steps, newStep: ICoords, player: Players) {
   console.log(steps, newStep, player);
   const stepsByPlayer = filterStepByPlayer(steps, player);
   if (checkWin(stepsByPlayer, newStep)) {

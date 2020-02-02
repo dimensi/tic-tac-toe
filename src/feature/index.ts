@@ -1,8 +1,8 @@
-import { combine, guard, sample, merge, createEvent, createStore } from 'effector-logger';
+import { combine, createEvent, createStore, guard, merge, sample } from 'effector-logger';
+import { MouseEvent } from 'react';
 import { last } from '../helpers';
 import { checkOnWin } from './checkOnWin';
-import { MouseEvent } from 'react';
-import { getCoordsFromMouse, isSameCoords, coordsToString } from './coords';
+import { Coords } from './coords';
 
 export const MAX_STEPS = Number(process.env.REACT_APP_MAX_STEPS || 3);
 export const BOX_SIZE = 40;
@@ -23,15 +23,15 @@ const current = history.map(history => last(history) || {});
 
 export const $game = combine({ player, winner, history, current });
 
-const mappedStep = makeStep.filterMap(event => getCoordsFromMouse(event));
+const mappedStep = makeStep.filterMap(event => new Coords(event));
 
 const stepMade = guard(
   sample($game, mappedStep, (game, coords) => [game, coords] as const),
   {
     filter: ([game, coords]) => {
-      const needFirstStep = !(game.history.length === 0 && !isSameCoords(coords, 1, 1));
+      const needFirstStep = !(game.history.length === 0 && !coords.is(1, 1));
       if (!needFirstStep) return false;
-      const isEmptyBox = !(coordsToString(coords) in current);
+      const isEmptyBox = !(coords.toString() in game.current);
       const gameIsEnd = game.winner !== -1;
       return isEmptyBox && !gameIsEnd;
     },

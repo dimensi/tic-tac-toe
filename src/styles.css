@@ -14,6 +14,17 @@ body {
   flex-wrap: wrap;
 }
 
+.controls {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 40px;
+  background-color: white;
+  box-shadow: 0 0 1px 0 black;
+  z-index: 3;
+}
+
 .title {
   width: 100%;
   margin-bottom: 20px;

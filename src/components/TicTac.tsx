@@ -1,8 +1,8 @@
 import React from 'react';
 import { useStore } from 'effector-react';
-import { $game, makeStep } from './store';
-import { Cell } from './components/Cell';
-import { VisualGrid } from './components/VisualGrid';
+import { $game, makeStep } from '../feature';
+import { Cell } from './Cell';
+import { VisualGrid } from './VisualGrid';
 
 export function TicTac() {
   const { current } = useStore($game);

@@ -1,6 +1,6 @@
 import React from 'react';
-import { cn } from '../../../helpers';
-import { Players } from '../store';
+import { cn } from '../helpers';
+import { Players } from '../feature';
 
 const players = ['tic', 'tac'];
 export function Cell({ player, xy }: { player: Players; xy: string }) {

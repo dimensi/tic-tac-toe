@@ -1,5 +1,5 @@
 import { combine, guard, sample, merge, createEvent, createStore } from 'effector-logger';
-import { last } from '../../../helpers';
+import { last } from '../helpers';
 import { calcWinner } from './calcWinner';
 import { MouseEvent } from 'react';
 

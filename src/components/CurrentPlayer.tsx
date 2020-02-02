@@ -1,6 +1,6 @@
 import React from 'react'
 import { useStore } from 'effector-react'
-import { $game } from '../store'
+import { $game } from '../feature'
 
 export function CurrentPlayer() {
   const game = useStore($game)

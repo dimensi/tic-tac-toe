@@ -4,7 +4,7 @@ import { last } from '../helpers';
 import { checkOnWin } from './checkOnWin';
 import { Coords } from './coords';
 
-export const MAX_STEPS = Number(process.env.REACT_APP_MAX_STEPS || 3);
+export const MAX_STEPS = Number(process.env.REACT_APP_MAX_STEPS || 4);
 export const BOX_SIZE = 40;
 
 export type Players = 0 | 1;

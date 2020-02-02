@@ -21,6 +21,7 @@ const player = createStore<Players>(0).reset(resetGame);
 const winner = createStore<Players | -1>(-1).reset(resetGame);
 const current = history.map(history => last(history) || {});
 
+export const $fieldSize = createStore<[number, number]>([window.innerWidth, window.innerHeight])
 export const $game = combine({ player, winner, history, current });
 
 const mappedStep = makeStep.filterMap(event => new Coords(event));
@@ -59,3 +60,15 @@ winner.on(stepMade, (_, [game, step]) => {
 history.on(stepCancelled, history => {
   return history.slice(0, history.length - 1);
 });
+
+
+$fieldSize.on(stepMade, ([width, height], [, step]) => {
+  const stepPositon = [step.x * BOX_SIZE, step.y * BOX_SIZE]
+  if (stepPositon[0] + BOX_SIZE * 4 > width) {
+    width *= 2
+  }
+  if (stepPositon[1] + BOX_SIZE * 4 > height) {
+    height *= 2
+  }
+  return [width, height]
+})

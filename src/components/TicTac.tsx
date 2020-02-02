@@ -1,13 +1,20 @@
 import React from 'react';
 import { useStore } from 'effector-react';
-import { $game, makeStep } from '../feature';
+import { $game, makeStep, $fieldSize } from '../feature';
 import { Cell } from './Cell';
 import { VisualGrid } from './VisualGrid';
 
+const playerColor = ['red', 'blue']
 export function TicTac() {
-  const { current } = useStore($game);
+  const { current, player } = useStore($game);
+  const [width, height] = useStore($fieldSize);
   return (
-    <div className="ticTacGrid" onClick={event => makeStep(event)}>
+    <div
+      className="ticTacGrid"
+      style={{ width, height, '--border-color': playerColor[player] }}
+      onClick={event => {
+        makeStep(event);
+      }}>
       <VisualGrid size={40} />
       {Object.entries(current).map(([xy, player], i) => (
         <Cell key={i} player={player} xy={xy} />

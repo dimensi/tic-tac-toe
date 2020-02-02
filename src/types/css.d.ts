@@ -4,5 +4,6 @@ declare module 'csstype' {
   interface Properties {
     '--x'?: string;
     '--y'?: string;
+    '--border-color'?: string;
   }
 }

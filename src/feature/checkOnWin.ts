@@ -1,13 +1,12 @@
-import { MAX_STEPS, Players, Steps, Coords } from '.';
+import { MAX_STEPS, Players, Steps } from '.';
+import { joinXY, Coords } from './coords';
 
-const joinXy = (x: number, y: number) => [x, y].join(':');
 const filterStepByPlayer = (steps: Steps, player: Players) =>
   Object.entries(steps).reduce((acc, [xy, p]) => {
     if (p !== player) return acc;
     acc.add(xy);
     return acc;
   }, new Set() as Set<string>);
-
 
 function* generatePoints() {
   const oX = [0, 1, 1, 1, 0, -1, -1, -1];
@@ -18,33 +17,33 @@ function* generatePoints() {
 }
 
 const createRadius = () => {
-  const result: Record<string, number> = {}
+  const result: Record<string, number> = {};
   for (let [x, y] of generatePoints()) {
-    result[joinXy(x, y)] = 1
+    result[joinXY(x, y)] = 1;
   }
-  return result
-}
+  return result;
+};
 
 function checkWin(steps: Set<string>, startStep: Coords) {
   let counter = 1;
-  const radius = createRadius()
+  const radius = createRadius();
   while (MAX_STEPS > counter) {
     for (let [x, y] of generatePoints()) {
-      const i = joinXy(x, y)
-      if (steps.has(joinXy(startStep.x + x * counter, startStep.y + y * counter))) {
-        radius[i] += 1
+      const i = joinXY(x, y);
+      if (steps.has(joinXY(startStep.x + x * counter, startStep.y + y * counter))) {
+        radius[i] += 1;
       }
     }
-    counter++
+    counter++;
   }
-  return Math.max(...Object.values(radius)) === MAX_STEPS
+  return Math.max(...Object.values(radius)) === MAX_STEPS;
 }
 
-export function calcWinner(steps: Steps, newStep: Coords, player: Players) {
+export function checkOnWin(steps: Steps, newStep: Coords, player: Players) {
   console.log(steps, newStep, player);
   const stepsByPlayer = filterStepByPlayer(steps, player);
   if (checkWin(stepsByPlayer, newStep)) {
-    return player
+    return player;
   }
-  return -1
+  return -1;
 }

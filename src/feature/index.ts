@@ -1,29 +1,11 @@
 import { combine, guard, sample, merge, createEvent, createStore } from 'effector-logger';
 import { last } from '../helpers';
-import { calcWinner } from './calcWinner';
+import { checkOnWin } from './checkOnWin';
 import { MouseEvent } from 'react';
+import { getCoordsFromMouse, isSameCoords, coordsToString } from './coords';
 
 export const MAX_STEPS = Number(process.env.REACT_APP_MAX_STEPS || 3);
 export const BOX_SIZE = 40;
-export interface ICoords {
-  x: number;
-  y: number;
-}
-
-export class Coords implements ICoords {
-  x = 0;
-  y = 0;
-  constructor(event: MouseEvent) {
-    this.x = Math.ceil(event.pageX / 40);
-    this.y = Math.ceil(event.pageY / 40);
-  }
-  is(x: number, y: number) {
-    return this.x === x && this.y === y;
-  }
-  toString() {
-    return [this.x, this.y].join(':');
-  }
-}
 
 export type Players = 0 | 1;
 export type Steps = Record<string, Players>;
@@ -41,15 +23,15 @@ const current = history.map(history => last(history) || {});
 
 export const $game = combine({ player, winner, history, current });
 
-const mappedStep = makeStep.filterMap(event => new Coords(event));
+const mappedStep = makeStep.filterMap(event => getCoordsFromMouse(event));
 
 const stepMade = guard(
   sample($game, mappedStep, (game, coords) => [game, coords] as const),
   {
     filter: ([game, coords]) => {
-      const needFirstStep = !(game.history.length === 0 && !coords.is(1, 1));
-      // if (!needFirstStep) return false;
-      const isEmptyBox = !(coords.toString() in current);
+      const needFirstStep = !(game.history.length === 0 && !isSameCoords(coords, 1, 1));
+      if (!needFirstStep) return false;
+      const isEmptyBox = !(coordsToString(coords) in current);
       const gameIsEnd = game.winner !== -1;
       return isEmptyBox && !gameIsEnd;
     },
@@ -68,9 +50,10 @@ history.on(stepMade, (h, [game, coords]) => {
 
 player.on(merge([stepMade, stepCancelled]), lastPlayer => (lastPlayer === 0 ? 1 : 0));
 
-winner.on(stepMade, (_, [ game, step ]) => {
-  if (MAX_STEPS * 2 - 2 > game.history.length) return;
-  return calcWinner(game.current, step, game.player);
+winner.on(stepMade, (_, [game, step]) => {
+  const howManyStepsNeedForChecking = MAX_STEPS * 2 - 2;
+  if (howManyStepsNeedForChecking > game.history.length) return;
+  return checkOnWin(game.current, step, game.player);
 });
 
 history.on(stepCancelled, history => {

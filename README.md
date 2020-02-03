@@ -3,7 +3,7 @@
 ## How to build
 ```bash
 npm ci;
-npm build;
+npm run build;
 npx serve -s build;
 ```
 

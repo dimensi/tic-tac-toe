@@ -21,8 +21,8 @@ const player = createStore<Players>(0).reset(resetGame);
 const winner = createStore<Players | -1>(-1).reset(resetGame);
 const current = history.map(history => last(history) || {});
 
-export const $fieldSize = createStore<[number, number]>([window.innerWidth, window.innerHeight]);
-$fieldSize.on(resetGame, () => [window.innerWidth, window.innerHeight]);
+// export const $fieldSize = createStore<[number, number]>([window.innerWidth, window.innerHeight]);
+// $fieldSize.on(resetGame, () => [window.innerWidth, window.innerHeight]);
 
 export const $game = combine({ player, winner, history, current });
 
@@ -63,13 +63,13 @@ history.on(stepCancelled, history => {
   return history.slice(0, history.length - 1);
 });
 
-$fieldSize.on(stepMade, ([width, height], [, step]) => {
-  const stepPositon = [step.x * BOX_SIZE, step.y * BOX_SIZE];
-  const needMoreWidth = stepPositon[0] + BOX_SIZE * 4 > width;
-  const needMoreHeight = stepPositon[1] + BOX_SIZE * 4 > height;
+// $fieldSize.on(stepMade, ([width, height], [, step]) => {
+//   const stepPositon = [step.x * BOX_SIZE, step.y * BOX_SIZE];
+//   const needMoreWidth = stepPositon[0] + BOX_SIZE * 4 > width;
+//   const needMoreHeight = stepPositon[1] + BOX_SIZE * 4 > height;
 
-  if (!needMoreWidth && !needMoreHeight) return;
-  if (needMoreWidth) width *= 2;
-  if (needMoreHeight) height *= 2;
-  return [width, height];
-});
+//   if (!needMoreWidth && !needMoreHeight) return;
+//   if (needMoreWidth) width *= 2;
+//   if (needMoreHeight) height *= 2;
+//   return [width, height];
+// });

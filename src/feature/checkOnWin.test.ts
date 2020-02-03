@@ -69,4 +69,23 @@ describe('Trying different cases with checkOnWin function', () => {
       testCase.player
     );
   });
+
+  it('case 4', () => {
+    const testCase = {
+      steps: {
+        "3:14": 1,
+        "3:11": 1,
+        "3:12": 1,
+        "3:9": 1,
+        "1:1": 0,
+        "5:13": 1,
+        "5:14": 0,
+        "4:12": 0,
+        "5:11": 0,
+        "4:10": 0,
+        "4:9": 1,
+        "5:9": 0
+      }
+    }
+  })
 });

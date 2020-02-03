@@ -21,14 +21,20 @@ const createRadius = () => {
 };
 
 function checkWin(steps: Steps, startStep: ICoords, player: Players) {
-  let counter = 0;
+  let counter = 1;
   const radius = createRadius();
   while (MAX_STEPS > counter) {
+    let checkCounter = 0
     for (let [x, y] of roundPoints) {
       const i = joinXY(x, y);
       const newX = startStep.x + x * counter;
       const newY = startStep.y + y * counter;
-      radius[i] += steps[joinXY(newX, newY)] === player ? 1 : 0;
+      const result = steps[joinXY(newX, newY)] === player ? 1 : 0
+      radius[i] += result;
+      checkCounter += result
+    }
+    if (checkCounter === 0) {
+      break
     }
     counter++;
   }

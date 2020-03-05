@@ -32,8 +32,6 @@ const stepMade = guard(
   sample($game, mappedStep, (game, coords) => [game, coords] as const),
   {
     filter: ([game, coords]) => {
-      const needFirstStep = !(game.history.length === 0 && !coords.is(1, 1));
-      if (!needFirstStep) return false;
       const isEmptyBox = !(coords.toString() in game.current);
       const gameIsEnd = game.winner !== -1;
       return isEmptyBox && !gameIsEnd;
